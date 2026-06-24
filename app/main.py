@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from fastapi import FastAPI, HTTPException, status, Response, Depends
 from fastapi import Body
 from random import randrange
@@ -36,8 +36,8 @@ app = FastAPI()
 def root():
     return {'message': 'Hello World!'}
 
-@app.get('/posts')
-def get_posts(db: Session = Depends(get_db), response_model = schemas.Post):
+@app.get('/posts', response_model = List[schemas.Post])
+def get_posts(db: Session = Depends(get_db)):
 
     posts = db.query(models.Post).all()
     return posts
